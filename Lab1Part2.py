@@ -38,6 +38,7 @@ print(y2)
 # x3 = np.linspace(-20, 20, 1000)
 x3 = torch.arange(-20, 20, 1).type(torch.float)
 gradient = torch.tensor(x3) # wrap array 'x' in tensor
+
 y2.backward(gradient)   # take derivative from f(x), I guess
                         # now we store f'(x) in x.grad. It is, kinda, 'gradient'?
                         # also tensor btw. So array of floats.
