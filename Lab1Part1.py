@@ -12,57 +12,59 @@ mainAxes = mainFigure.add_subplot()
 # (1) a11*x + a12*y = b1
 # (2) a21*x + a22*y = b2
 #
-# a11 = setOfCoefficients1[0]; a12 = setOfCoefficients1[1]; b1 = setOfOrdinates[0]
-# a21 = setOfCoefficients2[0]; a22 = setOfCoefficients2[1]; b2 = setOfOrdinates[1]
+# a11 = firstEquationInput[0]; a12 = firstEquationInput[1]; b1 = firstEquationInput[2]
+# a21 = secondEquationInput[0]; a22 = secondEquationInput[1]; b2 = secondEquationInput[2]
 
 # inputs
-setOfCoefficients1 = list(map(int,input("\nEnter first equation coefficients WITH SPACES like this 'a11 a12' : ").strip().split()))[:2]
-setOfCoefficients2 = list(map(int,input("\nEnter second equation coefficients WITH SPACES like this 'a21 a22' : ").strip().split()))[:2]
-setOfOrdinates = list(map(int,input("\nEnter equation's ordinates WITH SPACES like this 'b1 b2' : ").strip().split()))[:2]
+firstEquationInput = list(map(int,input("\nEnter first equation coefficients WITH SPACES like this 'a11 a12 b1' : ").strip().split()))[:3]
+secondEquationInput = list(map(int,input("\nEnter second equation coefficients WITH SPACES like this 'a21 a22 b2' : ").strip().split()))[:3]
+#setOfOrdinates = list(map(int,input("\nEnter equation's ordinates WITH SPACES like this 'b1 b2' : ").strip().split()))[:2] убрать
 
 # wrap arrays in np.array()
-coefficientsSet = np.array( [setOfCoefficients1, setOfCoefficients2] )
-setOfOrdinates = np.array(setOfOrdinates)
+coefficientsSet = np.array( [ firstEquationInput[:2], secondEquationInput[:2] ] )
+print(coefficientsSet)
+setOfOrdinates = np.array( [ firstEquationInput[2], secondEquationInput[2] ] )
+print(setOfOrdinates)
 
 # calculate normal and expanded matrix ranks
-rankOfMatrix = np.linalg.matrix_rank( [setOfCoefficients1, setOfCoefficients2] )
-rankOfExpandedMatrix = np.linalg.matrix_rank( [ setOfCoefficients1 + [setOfOrdinates[0]], setOfCoefficients2 + [setOfOrdinates[1]] ] )
+rankOfMatrix = np.linalg.matrix_rank( [ firstEquationInput[:2], secondEquationInput[:2] ] )
+rankOfExpandedMatrix = np.linalg.matrix_rank( [ firstEquationInput[:2] + [ firstEquationInput[2] ], secondEquationInput[:2] + [ secondEquationInput[2] ] ] )
 #print(rankOfMatrix, rankOfExpandedMatrix); # troubleshooting
 
 
 
 # data
 x = np.linspace(-20, 20) # Array of Xs
-#print(setOfCoefficients1[0] / setOfCoefficients1[1], setOfOrdinates[0] / setOfCoefficients1[1]) # troubleshooting
-#print(setOfCoefficients2[0] / setOfCoefficients2[1], setOfOrdinates[1] / setOfCoefficients2[1]) # troubleshooting
+#print(firstEquationInput[0] / firstEquationInput[1], setOfOrdinates[0] / firstEquationInput[1]) # troubleshooting убрать
+#print(secondEquationInput[0] / secondEquationInput[1], setOfOrdinates[1] / secondEquationInput[1]) # troubleshooting убрать
 
-y1 = (setOfCoefficients1[0] * -x / setOfCoefficients1[1]) + (setOfOrdinates[0] / setOfCoefficients1[1]) # first equation
-y2 = (setOfCoefficients2[0] * -x / setOfCoefficients2[1]) + (setOfOrdinates[1] / setOfCoefficients2[1]) # second equation
+y1 = (firstEquationInput[0] * -x / firstEquationInput[1]) + (firstEquationInput[2] / firstEquationInput[1]) # first equation
+y2 = (secondEquationInput[0] * -x / secondEquationInput[1]) + (secondEquationInput[2] / secondEquationInput[1]) # second equation
 
 # troubleshooting
 #print('check')
-#print(setOfCoefficients1[0], setOfCoefficients1[1], ordinatesSet[0], setOfCoefficients1[0] * 1 / setOfCoefficients1[1], ordinatesSet[0] / setOfCoefficients1[1], )
-#print( (setOfCoefficients1[0] * -1 / setOfCoefficients1[1]) + (ordinatesSet[0] / setOfCoefficients1[1]) )
-#print(setOfCoefficients2[0] * 1 / setOfCoefficients2[1]) + (ordinatesSet[1] / setOfCoefficients2[1])
+#print(firstEquationInput[0], firstEquationInput[1], ordinatesSet[0], firstEquationInput[0] * 1 / firstEquationInput[1], ordinatesSet[0] / firstEquationInput[1], )
+#print( (firstEquationInput[0] * -1 / firstEquationInput[1]) + (ordinatesSet[0] / firstEquationInput[1]) )
+#print(secondEquationInput[0] * 1 / secondEquationInput[1]) + (ordinatesSet[1] / secondEquationInput[1])
 
 # Create two plots of F(x) and G(x)
-mainAxes.plot(x, y1, label = str(setOfCoefficients1[0]) + '* x + ' + str(setOfCoefficients1[1]) + '* y = ' + str(setOfOrdinates[0]))
-mainAxes.plot(x, y2, label = str(setOfCoefficients2[0]) + '* x + ' + str(setOfCoefficients2[1]) + '* y = ' + str(setOfOrdinates[1]))
+mainAxes.plot(x, y1, label = str(firstEquationInput[0]) + '* x + ' + str(firstEquationInput[1]) + '* y = ' + str(firstEquationInput[2]))
+mainAxes.plot(x, y2, label = str(secondEquationInput[0]) + '* x + ' + str(secondEquationInput[1]) + '* y = ' + str(secondEquationInput[2]))
 
 # check for no and infinity solutions via Capelli theorem
-if (rankOfMatrix != rankOfExpandedMatrix):                      # (1) No solutions
+if (rankOfMatrix != rankOfExpandedMatrix):                        # (1) No solutions
     print("No possible solutions")
     mainAxes.text(0, -5, "No possible solutions")
-elif (rankOfMatrix != 2): # 2 - amount of unknown variables (x,y);(2) Infinity solutions
+elif (rankOfMatrix != 2): # 2 - amount of unknown variables (x,y);  (2) Infinity solutions
     print("Infinity possible solutions")
     mainAxes.text(0, -5, "Infinity possible solutions")
-else:                                                           # (3) One solution
+else:                                                             # (3) One solution
     # find answer matrix via np.linalg.solve()
     answerMatrix = np.linalg.solve(coefficientsSet, setOfOrdinates);
 
     # troubleshooting
-    # print(setOfCoefficients1[0], '* x +', setOfCoefficients1[1], '* y = ', setOfOrdinates[0])
-    # print(setOfCoefficients2[0], '* x +', setOfCoefficients2[1], '* y = ', setOfOrdinates[1])
+    # print(firstEquationInput[0], '* x +', firstEquationInput[1], '* y = ', setOfOrdinates[0])
+    # print(secondEquationInput[0], '* x +', secondEquationInput[1], '* y = ', setOfOrdinates[1])
     print(answerMatrix);
 
     # create dot plot to show solution
