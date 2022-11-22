@@ -14,7 +14,7 @@ mainAxes = mainFigure.add_subplot()
 mainAxes.set_ylim(-20, 20)
 mainAxes.set_xlim(-20, 20)
 
-# Equations
+# Equations 
 # (1) f(x) = sin(x) * x
 # (2) g(x) = f'(x)
 
