@@ -21,9 +21,7 @@ secondEquationInput = list(map(int,input("\nEnter second equation coefficients W
 
 # wrap arrays in np.array()
 coefficientsSet = np.array( [ firstEquationInput[:2], secondEquationInput[:2] ] )
-print(coefficientsSet)
 setOfOrdinates = np.array( [ firstEquationInput[2], secondEquationInput[2] ] )
-print(setOfOrdinates)
 
 # calculate normal and expanded matrix ranks
 rankOfMatrix = np.linalg.matrix_rank( [ firstEquationInput[:2], secondEquationInput[:2] ] )
