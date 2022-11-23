@@ -14,22 +14,21 @@ mainAxes.set_ylim(-20, 20)
 mainAxes.set_xlim(-20, 20)
 
 
-
-#y.backward() 
-#x.grad
-
 # data
-#x = np.linspace(-20, 20, 5000) # Array of Xs
-x = torch.arange(-20, 20, 0.1)
+x = torch.linspace(-20, 20, 5000, requires_grad=True) # Array of Xs
+#x = torch.arange(-20, 20, 0.1)
 
-x.clone().detach().requires_grad_(True)
-#x = torch.tensor(x, requires_grad=True) #make a Tensor object out of x
+y = torch.sin(x) * x
+y.backward(x)
 
-y1 = np.sin(x) * x # first equation
-y1.backward()
 
 # Create two plots of F(x) and G(x)
-mainAxes.plot(x, y1, label = 'f(x)')
+# your function
+mainAxes.plot(x.detach().numpy(), y.detach().numpy(), label='f(x)')
+# gradients
+mainAxes.plot(x.detach().numpy(), x.grad.detach().numpy(), label='g(x)')
+
+#mainAxes.plot(x, y, label = 'f(x)')
 #mainAxes.plot(x, y2, label = 'f'(x)')
 
 # Add titles
