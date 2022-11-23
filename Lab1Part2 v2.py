@@ -18,8 +18,9 @@ mainAxes.set_xlim(-20, 20)
 x = torch.linspace(-20, 20, 5000, requires_grad=True) # Array of Xs
 #x = torch.arange(-20, 20, 0.1)
 
-y = torch.sin(x) * x
-y.backward(x)
+y = x**2
+#y = torch.sum(x ** 2)
+y.backward()
 
 
 # Create two plots of F(x) and G(x)
