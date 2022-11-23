@@ -18,7 +18,6 @@ mainAxes = mainFigure.add_subplot()
 # inputs
 firstEquationInput = list(map(int,input("\nEnter first equation coefficients WITH SPACES like this 'a11 a12 b1' : ").strip().split()))[:3]
 secondEquationInput = list(map(int,input("\nEnter second equation coefficients WITH SPACES like this 'a21 a22 b2' : ").strip().split()))[:3]
-#setOfOrdinates = list(map(int,input("\nEnter equation's ordinates WITH SPACES like this 'b1 b2' : ").strip().split()))[:2] убрать
 
 # wrap arrays in np.array()
 coefficientsSet = np.array( [ firstEquationInput[:2], secondEquationInput[:2] ] )
@@ -29,23 +28,12 @@ print(setOfOrdinates)
 # calculate normal and expanded matrix ranks
 rankOfMatrix = np.linalg.matrix_rank( [ firstEquationInput[:2], secondEquationInput[:2] ] )
 rankOfExpandedMatrix = np.linalg.matrix_rank( [ firstEquationInput[:2] + [ firstEquationInput[2] ], secondEquationInput[:2] + [ secondEquationInput[2] ] ] )
-#print(rankOfMatrix, rankOfExpandedMatrix); # troubleshooting
-
-
 
 # data
 x = np.linspace(-20, 20) # Array of Xs
-#print(firstEquationInput[0] / firstEquationInput[1], setOfOrdinates[0] / firstEquationInput[1]) # troubleshooting убрать
-#print(secondEquationInput[0] / secondEquationInput[1], setOfOrdinates[1] / secondEquationInput[1]) # troubleshooting убрать
 
 y1 = (firstEquationInput[0] * -x / firstEquationInput[1]) + (firstEquationInput[2] / firstEquationInput[1]) # first equation
 y2 = (secondEquationInput[0] * -x / secondEquationInput[1]) + (secondEquationInput[2] / secondEquationInput[1]) # second equation
-
-# troubleshooting
-#print('check')
-#print(firstEquationInput[0], firstEquationInput[1], ordinatesSet[0], firstEquationInput[0] * 1 / firstEquationInput[1], ordinatesSet[0] / firstEquationInput[1], )
-#print( (firstEquationInput[0] * -1 / firstEquationInput[1]) + (ordinatesSet[0] / firstEquationInput[1]) )
-#print(secondEquationInput[0] * 1 / secondEquationInput[1]) + (ordinatesSet[1] / secondEquationInput[1])
 
 # Create two plots of F(x) and G(x)
 mainAxes.plot(x, y1, label = str(firstEquationInput[0]) + '* x + ' + str(firstEquationInput[1]) + '* y = ' + str(firstEquationInput[2]))
@@ -62,9 +50,6 @@ else:                                                             # (3) One solu
     # find answer matrix via np.linalg.solve()
     answerMatrix = np.linalg.solve(coefficientsSet, setOfOrdinates);
 
-    # troubleshooting
-    # print(firstEquationInput[0], '* x +', firstEquationInput[1], '* y = ', setOfOrdinates[0])
-    # print(secondEquationInput[0], '* x +', secondEquationInput[1], '* y = ', setOfOrdinates[1])
     print(answerMatrix);
 
     # create dot plot to show solution
@@ -79,6 +64,9 @@ mainAxes.set_title('SLE solution') # set Axes title
 # Add labels
 mainAxes.set_xlabel('x label')  # Add an x-label to the axes.
 mainAxes.set_ylabel('y label')  # Add a y-label to the axes.
+
+# Add grid
+mainAxes.grid(True)
 
 #Add legend
 mainAxes.legend()
